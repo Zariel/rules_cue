@@ -1,5 +1,3 @@
-load("@io_bazel_rules_go//go/private:common.bzl", "env_execute")
-
 CuePkg = provider(
     doc = "Collects files from cue_library for use in downstream cue_export",
     fields = {
@@ -446,3 +444,22 @@ cue_repository = repository_rule(
         "patch_cmds": attr.string_list(default = []),
     },
 )
+
+def env_execute(ctx, arguments, environment = {}, **kwargs):
+    """Executes a command in for a repository rule.
+    It prepends "env -i" to "arguments" before calling "ctx.execute".
+    Variables that aren't explicitly mentioned in "environment"
+    are removed from the environment. This should be preferred to "ctx.execute"
+    in most situations.
+    """
+    if ctx.os.name.startswith("windows"):
+        return ctx.execute(arguments, environment = environment, **kwargs)
+    env_args = ["env", "-i"]
+    environment = dict(environment)
+    for var in ["TMP", "TMPDIR"]:
+        if var in ctx.os.environ and not var in environment:
+            environment[var] = ctx.os.environ[var]
+    for k, v in environment.items():
+        env_args.append("%s=%s" % (k, v))
+    arguments = env_args + arguments
+    return ctx.execute(arguments, **kwargs)
