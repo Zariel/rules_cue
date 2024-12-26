@@ -14,7 +14,13 @@ _cue_runtimes = {
             "arch": "x86_64",
             "url": "https://github.com/cue-lang/cue/releases/download/v0.7.1/cue_v0.7.1_darwin_amd64.tar.gz",
             "sha256": "8bc701670dfd72d009239605c45973dfd95b7bdaaf55b5eb923c1909058b09e4",
-        }
+        },
+        {
+            "os": "darwin",
+            "arch": "arm64",
+            "url": "https://github.com/cue-lang/cue/releases/download/v0.7.1/cue_v0.7.1_darwin_arm64.tar.gz",
+            "sha256": "a163cc7c33adeeb6c3799c9ec20b8c6a36ffe267453301eaef996f717178ac08",
+        },
     ]
 }
 
